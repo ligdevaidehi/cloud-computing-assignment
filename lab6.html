@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Authentication</title>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.esm.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.esm.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAscmhpFst54jbaffR0z-XfK4cFKPbUZCE",
+            authDomain: "cloudlab6-2023.firebaseapp.com",
+            projectId: "cloudlab6-2023",
+            storageBucket: "cloudlab6-2023.appspot.com",
+            messagingSenderId: "209350000239",
+            appId: "1:209350000239:web:8c703bb82bc5ccb448179a",
+            measurementId: "G-5FHCT4HCRC"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+    </script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        #login-form {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Firebase Authentication Demo</h1>
+    <div id="login-form">
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+        <br>
+        <button onclick="login()">Login</button>
+        <button onclick="signup()">Sign Up</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        // Firebase Authentication Functions
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            signInWithEmailAndPassword(auth, email, password)
+                .then(userCredential => {
+                    const user = userCredential.user;
+                    console.log('Login success:', user);
+                })
+                .catch(error => console.error('Login error:', error));
+        }
+
+        function signup() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            console.log('Signing up with:', email, password);
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then(userCredential => {
+                    const user = userCredential.user;
+                    console.log('Signup success:', user);
+                })
+                .catch(error => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error('Signup error:', errorCode, errorMessage);
+                });
+        }
+
+        function logout() {
+            signOut(auth)
+                .then(() => console.log('User signed out'))
+                .catch(error => console.error('Logout error:', error));
+        }
+    </script>
+</body>
+</html>
